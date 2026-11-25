@@ -347,6 +347,7 @@ function play(r){
  $('plt').textContent=(r.y&&!r.t.includes(r.y)?r.y+'. ':'')+r.t;
  const x=$('plx');x.href=r.u;x.textContent='Open on '+(r.s==='yt'?'YouTube':'the Internet Archive');
  dlg.showModal();
+ $('plc').focus();
 }
 dlg.addEventListener('close',()=>{scr.innerHTML=''});
 $('plc').addEventListener('click',()=>dlg.close());
