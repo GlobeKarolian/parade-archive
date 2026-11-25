@@ -101,6 +101,7 @@ footer ul{margin:0;padding-left:18px}
  .m .len{text-align:right}
  .m .sep{display:none}
 }
+@media(max-width:360px){.yi{font-size:13px}.yi td a,.yi td span{padding:5px 0}.yi th{width:3.2em!important}}
 @media(max-width:520px){.yi .l{display:none!important}.yi .s{display:inline}.yi th{width:3.6em;padding-right:4px}}
 
 /* The player: one TV per era */
@@ -330,7 +331,7 @@ const PANEL={
  vhs:y=>'<div class="vcr"><span class="slot"><span class="tape">Macy\'s Parade \''+String(y).slice(2)+'</span></span><span class="vfd">PLAY &#9654; SP</span></div>',
  silver:()=>'<div class="dvr"><i class="led"></i><span class="vfd blue">DVR</span></div>',
  flat:()=>'<i class="stand"></i>'};
-const CHROME={film:150,console:130,seventies:150,vhs:210,silver:190,flat:140};
+const CHROME={film:190,console:170,seventies:190,vhs:250,silver:230,flat:170};
 function embedUrl(r){
  if(r.x)return null;
  if(r.s==='yt'){const m=r.u.match(/[?&]v=([\w-]{11})/);return m?'https://www.youtube-nocookie.com/embed/'+m[1]+'?autoplay=1&rel=0&playsinline=1':null}
