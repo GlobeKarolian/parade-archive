@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thanksgiving Parade Archive</title>
+<link rel="canonical" href="https://karolian.com/parade/">
+<meta name="description" content="Recordings of the Macy's Thanksgiving Day Parade from 1927 on: full TV broadcasts, newsreels, home movies and clips, listed by year.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+/* VOICE plain reference page with a dry sense of humour about the delay
+   IDEA a newspaper TV-listings column: year in the margin, formats as sub-heads, one line per recording
+   PICTURE one 1979 photo of the turkey float on Broadway; the listing does the rest; each video opens in a TV of its decade
+   COLOUR white paper, black ink, grey for secondary text; colour lives in the photo and the TV sets
+   TYPE Libre Franklin throughout, weight does the work
+   LAYOUT laptop: headline left, photo right, starter picks, year index, two-column listing; phone: one column */
+:root{color-scheme:light dark;
+--bg:light-dark(#fff,#121212);--ink:light-dark(#111,#ececec);--mute:light-dark(#666,#a0a0a0);
+--rule:light-dark(#d9d9d9,#333);--seen:light-dark(#5b4a7a,#b3a4d6)}
+:root[data-theme=light]{color-scheme:light}
+:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html{scroll-padding-top:12px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "Libre Franklin","Franklin Gothic Medium",Arial,sans-serif;overflow-x:clip}
+.page{max-width:1080px;margin:0 auto;padding:18px max(16px,4vw,env(safe-area-inset-left,0px)) 56px}
+a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2px}
+a:hover{text-decoration-thickness:2px}
+main a:visited{color:var(--seen)}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+img{max-width:100%;height:auto;display:block}
+.site{font-size:14px;font-weight:800;margin:0 0 22px;padding-bottom:10px;border-bottom:2px solid var(--ink)}
+.top{display:grid;gap:22px 36px;align-items:start}
+h1{font-size:clamp(32px,5.2vw,50px);line-height:1.04;font-weight:800;letter-spacing:-.02em;margin:0 0 14px;text-wrap:balance}
+.dek{font-size:17px;max-width:60ch;margin:0 0 10px}
+.count{color:var(--mute);font-size:14px;margin:0;max-width:60ch}
+.ph{margin:0}
+.ph img{width:100%;border:1px solid var(--ink)}
+.ph figcaption{color:var(--mute);font-size:13px;margin-top:6px}
+h2.lab{font-size:14px;font-weight:800;margin:0 0 8px}
+.santa{border-top:2px solid var(--ink);margin:24px 0 0;padding-top:12px;max-width:none}
+.santa+.picks{border-top:1px solid var(--rule);margin-top:12px}
+.picks{border-top:2px solid var(--ink);margin-top:24px;padding-top:12px}
+.picks ul{list-style:none;margin:0;padding:0;display:grid;gap:0 36px}
+.picks li{display:grid;grid-template-columns:3.4rem minmax(0,1fr);padding:7px 0;border-top:1px solid var(--rule)}
+.picks b{font-weight:800;font-variant-numeric:tabular-nums}
+.key{color:var(--mute);font-size:14px;margin:8px 0 0}
+nav.years{border-top:2px solid var(--ink);margin-top:24px;padding-top:12px}
+table.yi{border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:15px;width:100%;max-width:640px}
+.yi th{text-align:left;font-weight:400;color:var(--mute);padding:5px 10px 5px 0;white-space:nowrap;width:4.2em}
+.yi td{padding:0;text-align:left}
+.yi td a,.yi td span{display:block;padding:5px 2px}
+.yi td span span{display:inline;padding:0}
+.yi a{text-decoration:none}
+.yi a:hover{text-decoration:underline}
+.yi .full{font-weight:800}
+.yi .none{color:var(--mute);opacity:.55}
+.yi .war{color:var(--mute);font-size:13px;font-style:italic}
+.yi .s{display:none}
+.tools{border-top:2px solid var(--ink);margin-top:26px;padding:12px 0 4px;display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center}
+.filters{display:flex;flex-wrap:wrap;gap:2px 16px;flex:1 1 420px}
+.filters button{font:inherit;font-size:15px;background:none;border:0;padding:8px 0;color:var(--ink);cursor:pointer;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2px}
+.filters button[aria-pressed=true]{font-weight:800;text-decoration:none}
+.filters small{color:var(--mute);font-weight:400;font-size:13px}
+#q{font:inherit;font-size:16px;flex:1 1 220px;max-width:320px;height:40px;padding:0 10px;border:1px solid var(--ink);border-radius:0;background:var(--bg);color:var(--ink)}
+.status{color:var(--mute);font-size:14px;margin:6px 0 0;min-height:1.5em}
+.yr{border-top:2px solid var(--ink);padding:14px 0 18px;margin-top:10px}
+.yr>header{display:flex;align-items:baseline;gap:12px;margin-bottom:6px}
+.yr h2{font-size:30px;line-height:1;font-weight:800;margin:0;font-variant-numeric:tabular-nums}
+.yr .ord{color:var(--mute);font-size:14px;margin:0}
+.yr .note{margin:0 0 8px;max-width:68ch}
+.grp{border-top:1px solid var(--rule);padding:8px 0}
+.grp:first-of-type{border-top:0}
+.grp h3{font-size:14px;font-weight:800;margin:0 0 2px}
+.grp ul{list-style:none;margin:0;padding:0}
+.grp li{padding:5px 0}
+.t{overflow-wrap:anywhere}
+.x{color:var(--mute);font-size:14px}
+.m{display:block;color:var(--mute);font-size:14px}
+.m .len{color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap}
+.gap{color:var(--mute);font-size:15px;padding:10px 0;border-top:1px solid var(--rule);margin:10px 0 0}
+.gap b{color:var(--ink);font-weight:800;margin-right:10px;font-variant-numeric:tabular-nums}
+.empty{padding:40px 0;color:var(--mute)}
+footer{border-top:2px solid var(--ink);margin-top:28px;padding-top:14px;font-size:15px}
+footer h2{font-size:14px;font-weight:800;margin:14px 0 4px}
+footer p{margin:0 0 8px;max-width:72ch}
+footer ul{margin:0;padding-left:18px}
+@media(min-width:760px){
+ .top{grid-template-columns:minmax(0,1fr) minmax(0,380px)}
+ .picks ul{grid-template-columns:1fr 1fr}
+ .yr{display:grid;grid-template-columns:8.5rem minmax(0,1fr);column-gap:8px}
+ .yr>header{display:block;grid-row:1/span 30}
+ .yr h2{font-size:36px}
+ .yr .ord{margin-top:4px}
+ .yr .note,.yr .grp{grid-column:2}
+ .grp{display:grid;grid-template-columns:10.5rem minmax(0,1fr);column-gap:8px}
+ .grp h3{padding-top:5px}
+ .grp li{display:grid;grid-template-columns:minmax(0,1fr) 15rem;column-gap:20px;align-items:baseline}
+ .m{display:grid;grid-template-columns:4.6rem minmax(0,1fr);column-gap:10px}
+ .m .len{text-align:right}
+ .m .sep{display:none}
+}
+@media(max-width:520px){.yi .l{display:none!important}.yi .s{display:inline}.yi th{width:3.6em;padding-right:4px}}
+
+/* The player: one TV per era */
+dialog.pl{border:0;padding:0;background:none;max-width:none;max-height:none;overflow:visible;color:#f2f2f2}
+dialog.pl::backdrop{background:rgba(10,10,10,.96)}
+.plw{margin:0 auto}
+.set{position:relative;box-shadow:0 18px 50px rgba(0,0,0,.6)}
+.scr{position:relative;aspect-ratio:var(--r,4/3);background:#000;overflow:hidden}
+.scr iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.scr .msg{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:20px;margin:0;color:#ddd}
+.crt .scr::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(to bottom,rgba(0,0,0,.13) 0 1px,transparent 1px 3px);box-shadow:inset 0 0 60px rgba(0,0,0,.5)}
+.e-film{background:#0c0c0c;padding:16px 42px 12px;border-radius:3px}
+.e-film::before,.e-film::after{content:"";position:absolute;top:0;bottom:0;width:16px;background:repeating-linear-gradient(to bottom,transparent 0 9px,#cfc8b6 9px 23px,transparent 23px 32px)}
+.e-film::before{left:13px}
+.e-film::after{right:13px}
+.e-film .scr::after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 90px rgba(0,0,0,.6)}
+.e-film .pan{font:italic 15px Georgia,"Times New Roman",serif;color:#cfc8b6;text-align:center;padding-top:10px}
+.e-console,.e-seventies{display:grid;grid-template-columns:minmax(0,1fr) 96px;gap:16px;padding:20px;border-radius:12px}
+.e-console{background:repeating-linear-gradient(93deg,rgba(0,0,0,.1) 0 2px,transparent 2px 11px),linear-gradient(90deg,#6d4524,#8b5b30 35%,#6f4622 70%,#84552b)}
+.e-console .scr{border-radius:9%/12%;border:10px solid #1d1711}
+.e-seventies{background:#232323;box-shadow:0 0 0 12px #70461f,0 22px 50px rgba(0,0,0,.6)}
+.e-seventies .scr{border-radius:6%/8%;border:8px solid #0d0d0d}
+.e-console .pan,.e-seventies .pan{display:flex;flex-direction:column;align-items:center;gap:14px;padding-top:6px}
+.dial{flex:none;width:54px;height:54px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#f3e2b0,#b08a3c 60%,#6e5320);box-shadow:0 2px 4px rgba(0,0,0,.5);position:relative}
+.dial::after{content:"";position:absolute;left:50%;top:6px;width:3px;height:18px;margin-left:-1.5px;background:#3a2c10;border-radius:2px}
+.e-seventies .dial{background:radial-gradient(circle at 35% 30%,#fafafa,#9a9a9a 60%,#555)}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.btns i{width:28px;height:16px;border-radius:2px;background:linear-gradient(#e6e6e6,#9b9b9b)}
+.grille{flex:1;align-self:stretch;min-height:44px;border-radius:6px;background:repeating-linear-gradient(to bottom,#2a1c0f 0 4px,#7a5129 4px 9px)}
+.e-seventies .grille{background:repeating-linear-gradient(to bottom,#0f0f0f 0 3px,#3a3a3a 3px 7px)}
+.e-vhs{background:#1b1b1d;padding:18px 18px 0;border-radius:10px}
+.e-vhs .scr{border-radius:5%/6.5%;border:8px solid #0a0a0a}
+.osd{position:absolute;left:5%;top:6%;font:700 clamp(16px,3vw,26px)/1 "Courier New",monospace;color:#39ff6a;text-shadow:0 0 6px rgba(57,255,106,.7);pointer-events:none;animation:osd 4s forwards}
+@keyframes osd{0%,80%{opacity:1}100%{opacity:0}}
+.vcr,.dvr{display:flex;align-items:center;gap:14px}
+.vcr{margin:16px -18px 0;padding:12px 18px;background:linear-gradient(#2c2c2f,#141416);border-radius:0 0 10px 10px;border-top:2px solid #000}
+.slot{flex:1;height:30px;background:#050505;border-radius:3px;box-shadow:inset 0 2px 5px #000;display:flex;align-items:center;padding:0 8px;overflow:hidden}
+.tape{background:#f4f1e6;color:#1a2a6b;font:15px/1.3 "Bradley Hand","Segoe Print","Comic Sans MS",cursive;padding:0 10px;border-radius:2px;white-space:nowrap}
+.vfd{flex:none;font:700 14px/1 "Courier New",monospace;color:#5ff3e0;background:#031312;padding:7px 10px;border-radius:3px;white-space:nowrap}
+.e-silver{background:linear-gradient(#dcdfe3,#aeb3ba);padding:16px 16px 0;border-radius:8px}
+.e-silver .scr{border:6px solid #111;border-radius:2%}
+.dvr{justify-content:space-between;margin:14px -16px 0;padding:10px 18px;background:linear-gradient(#c6cad0,#9399a1);border-radius:0 0 8px 8px;border-top:1px solid #7a8087}
+.led{width:9px;height:9px;border-radius:50%;background:#3aa0ff;box-shadow:0 0 8px #3aa0ff}
+.vfd.blue{color:#8fd0ff;background:#06121c}
+.e-flat{background:#0a0a0a;padding:8px;border-radius:6px}
+.stand{position:absolute;left:50%;bottom:-20px;width:170px;height:20px;margin-left:-85px;background:linear-gradient(#1c1c1c,#0a0a0a);clip-path:polygon(38% 0,62% 0,100% 100%,0 100%)}
+.plbar{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;margin-top:34px;font-size:15px}
+#plt{flex:1 1 240px}
+.plbar a{color:#fff}
+.plbar button{font:inherit;background:none;border:1px solid #bbb;color:#fff;padding:8px 16px;cursor:pointer}
+@media(max-width:560px){.e-console,.e-seventies{grid-template-columns:1fr;padding:14px}.e-console .pan,.e-seventies .pan{flex-direction:row;padding:0}.grille{min-height:54px}.e-film{padding:12px 30px 10px}.e-film::before{left:7px}.e-film::after{right:7px}}
+@media(prefers-reduced-motion:reduce){.osd{animation:none;opacity:0}}
+</style>
+</head>
+<body>
+<div class="page">
+<p class="site">Thanksgiving Parade Archive</p>
+<header class="top">
+<div>
+<div id="top-delay">
+<h1>The parade is delayed. Watch an old one.</h1>
+<p class="dek">A nor'easter <a href="https://www.bostonglobe.com/2026/11/25/lifestyle/macys-thanksgiving-day-parade-postponed/">pushed New York's 100th Thanksgiving Day Parade to Saturday</a> at 8:30 a.m., the first time weather has ever moved it. NBC is filling Thursday morning with a rerun of <a href="#y2025">last year's</a>. That's fine, but there are <span id="n-rec">741</span> recordings here from <span id="n-par">91</span> different parades, going back to 1927, and the old ones are probably better anyway.</p>
+</div>
+<div id="top-plain" hidden>
+<h1>Thanksgiving Day Parade Archive</h1>
+<p class="dek">Every recording of the parade we could find online, year by year: full TV broadcasts, newsreels, home movies and clips.</p>
+</div>
+<p class="count" id="count">Loading the list.</p>
+</div>
+<figure class="ph">
+<img src="hero.jpg" width="880" height="700" alt="The Tom Turkey float rolls down Broadway under a Mamma Leone's billboard in 1979">
+<figcaption>Broadway at 47th Street, 1979. Photo by Jon Harder, <a href="https://commons.wikimedia.org/wiki/File:Macys-parade-1979.jpg">Wikimedia Commons</a>, CC BY 2.5, cropped.</figcaption>
+</figure>
+</header>
+
+<p class="santa">If you want, please donate to <a href="https://www.globesanta.org/p/1"><b>Globe Santa</b></a>. It is the Boston Globe Foundation's holiday gift program for children in need, and it has been at it since 1956.</p>
+
+<section class="picks">
+<h2 class="lab">Where to start</h2>
+<ul>
+<li><b>1939</b><span><a href="https://www.youtube.com/watch?v=KyCD3WgGZ3Y">Three minutes of 8mm home movie</a>, in color.</span></li>
+<li><b>1959</b><span><a href="https://www.youtube.com/watch?v=saJBfFgAZPM">The oldest full broadcast here</a>, about an hour of NBC.</span></li>
+<li><b>1971</b><span><a href="#y1971">The other time the weather won.</a> Wind and rain grounded the balloons, and only a few minutes of it turn up.</span></li>
+<li><b>1976</b><span><a href="https://www.youtube.com/watch?v=7ed1-1a3PEY">The 50th parade</a>, start to finish, in two hours.</span></li>
+<li><b>1988</b><span><a href="https://archive.org/details/macysthanksgivingdayparade1988withcommercialsvhs_201912">Three hours of NBC with the commercials left in</a>, which is half the reason to watch.</span></li>
+<li><b>1989</b><span><a href="https://www.youtube.com/watch?v=Bh9l-c4Kh_4">The snowy one.</a></span></li>
+</ul>
+<p class="key" id="hint">Click a title and it plays here, on a TV from the right decade.</p>
+</section>
+
+<nav class="years" aria-label="Years">
+<h2 class="lab">Jump to a year</h2>
+<table class="yi" id="yi"></table>
+<p class="key">Bold years have at least one full TV broadcast. Grey years have nothing yet.</p>
+</nav>
+
+<div class="tools">
+<div class="filters" id="filters" role="group" aria-label="Show"></div>
+<input id="q" type="search" placeholder="Search: Snoopy, 1997, CBS" aria-label="Search the list" autocomplete="off">
+</div>
+<p class="status" id="status" aria-live="polite"></p>
+
+<main id="list"><p class="empty">Loading the list.</p></main>
+
+<footer>
+<h2>About this list</h2>
+<p>A fan-kept list, not affiliated with Macy's or NBC. Compiled in November 2026 from YouTube, the Internet Archive and a handful of film archives. Most of the broadcasts are home recordings of NBC and CBS airings that fans have uploaded, so links come and go. When the same recording exists in more than one place, the other copies are listed after it.</p>
+<p id="missing"></p>
+<h2>Elsewhere</h2>
+<ul>
+<li><a href="https://archive.org/search?query=%22macy%27s+thanksgiving+day+parade%22&amp;and%5B%5D=mediatype%3A%22movies%22">Internet Archive: all parade video</a></li>
+<li><a href="https://www.gettyimages.com/videos/macys-thanksgiving-day-parade">Getty Images: licensed newsreel footage</a></li>
+<li><a href="https://learningonscreen.ac.uk/newsonscreen/">Learning on Screen: British newsreel catalogue</a></li>
+<li><a href="https://www.bostonglobe.com/tag/thanksgiving/">The Boston Globe: Thanksgiving coverage</a></li>
+<li><a href="https://www.peacocktv.com/">Peacock, for the official NBC broadcast</a></li>
+<li><a href="https://www.globesanta.org/p/1">Globe Santa, if you want to give a kid a gift this year</a></li>
+</ul>
+</footer>
+</div>
+
+<dialog class="pl" id="pl" aria-label="Video player">
+<div class="plw" id="plw">
+<div class="set" id="set"><div class="scr" id="scr"></div><div class="pan" id="pan"></div></div>
+<div class="plbar"><span id="plt"></span><a id="plx" href="#" target="_blank" rel="noopener">Open on YouTube</a><button type="button" id="plc">Close</button></div>
+</div>
+</dialog>
+
+<script>
+{
+const CATS=[
+ ['broadcast','Full broadcast','Full broadcasts'],
+ ['partial','Partial broadcast','Partial broadcasts'],
+ ['film','Newsreel and film','Newsreels and film'],
+ ['street','Shot from the street','Shot from the street'],
+ ['balloons','Balloon reel','Balloon reels'],
+ ['inflation','Behind the scenes','Behind the scenes'],
+ ['clip','Clip','Clips'],
+ ['compilation','Compilation','Compilations'],
+ ['press','Globe and Boston.com','Globe and Boston.com']];
+const ONE=Object.fromEntries(CATS.map(c=>[c[0],c[1]]));
+const SRC={yt:'YouTube',ia:'Internet Archive'};
+const NOTES={2020:'No crowds this year. The parade was staged for television only.',2026:'Postponed from Thanksgiving to Saturday, Nov. 28. The video below is from the night before the original date, when the balloons were being inflated.'};
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const nth=n=>{const s=['th','st','nd','rd'],v=n%100;return n+(s[(v-20)%10]||s[v]||s[0])};
+const parN=y=>y<=1941?y-1923:(y>=1945?y-1926:null);
+const war=y=>y>=1942&&y<=1944;
+const dur=d=>{if(!d)return'';if(d>=3600){const h=Math.floor(d/3600),m=Math.round(d%3600/60);return h+'h'+(m?' '+m+'m':'')}if(d>=60)return Math.round(d/60)+' min';return d+' sec'};
+const $=id=>document.getElementById(id);
+let DATA=[],cat='all',q='';
+const BYURL=new Map();
+try{const s=localStorage.getItem('mpa-cat');if(s)cat=s}catch(e){}
+
+// After the rescheduled parade, the top goes back to the plain archive title.
+if(Date.now()>Date.UTC(2026,10,28,17,0)){$('top-delay').hidden=true;$('top-plain').hidden=false}
+
+const visible=()=>{const t=q.trim().toLowerCase();return DATA.filter(r=>(cat==='all'||r.c===cat)&&(!t||r._s.includes(t)))};
+
+function row(r){
+ const press=r.c==='press';
+ const src=r.s==='web'?r.b:SRC[r.s]+(r.b?', '+r.b:'');
+ const extra=[r.n,r.sp?r.sp[0]+' to '+r.sp[1]:''].filter(Boolean).join(', ');
+ const seen={};
+ const also=r.m?' <span class="x">also on '+r.m.map(m=>{const nm=m[0]==='ia'?'Internet Archive':(m[0]==='yt'?'YouTube':m[2]);seen[nm]=(seen[nm]||0)+1;return '<a href="'+esc(m[1])+'" target="_blank" rel="noopener">'+esc(nm+(seen[nm]>1?' '+seen[nm]:''))+'</a>'}).join(', ')+'</span>':'';
+ const len=press?'':dur(r.d);
+ return '<li><span class="t"><a href="'+esc(r.u)+'" target="_blank" rel="noopener">'+esc(r.t)+'</a>'+(extra?' <span class="x">'+esc(extra)+'</span>':'')+also+'</span><span class="m"><span class="len">'+len+'</span>'+(len?'<span class="sep"> · </span>':'')+'<span>'+esc(src)+'</span></span></li>';
+}
+function groups(rs){
+ let h='';
+ for(const c of CATS){const g=rs.filter(r=>r.c===c[0]);if(!g.length)continue;h+='<div class="grp"><h3>'+(g.length>1?c[2]:c[1])+'</h3><ul>'+g.map(row).join('')+'</ul></div>'}
+ return h;
+}
+function render(){
+ const v=visible(),filtered=cat!=='all'||q.trim();
+ const by=new Map();for(const r of v){const k=r.y??'u';if(!by.has(k))by.set(k,[]);by.get(k).push(r)}
+ let h='',run=[];
+ const flush=()=>{if(!run.length)return;const a=run[0],b=run[run.length-1];h+='<p class="gap"><b>'+a+(b!==a?' to '+b:'')+'</b>Nothing found yet'+(a===1924?'. The earliest film here is from 1927.':'')+'</p>';run=[]};
+ for(let y=2026;y>=1924;y--){
+  const rs=by.get(y);
+  if(war(y)){if(!filtered&&y===1942){flush();h+='<p class="gap" id="y1942"><b>1942 to 1944</b>No parade. It was suspended during World War II.</p>'}continue}
+  if(!rs){if(!filtered)run.unshift(y);continue}
+  flush();
+  const n=parN(y);
+  h+='<section class="yr" id="y'+y+'"><header><h2>'+y+'</h2><p class="ord">'+(n?nth(n)+' parade':'')+'</p></header>'+(NOTES[y]?'<p class="note">'+esc(NOTES[y])+'</p>':'')+groups(rs)+'</section>';
+ }
+ flush();
+ const u=by.get('u');
+ if(u)h+='<section class="yr" id="undated"><header><h2>n.d.</h2><p class="ord">Year not confirmed</p></header>'+groups(u)+'</section>';
+ $('list').innerHTML=h||'<p class="empty">Nothing matches. Try a balloon, a year or a network.</p>';
+ $('status').textContent=filtered?v.length+' of '+DATA.length+' entries shown':'';
+}
+function filters(){
+ const cnt={};for(const r of DATA)cnt[r.c]=(cnt[r.c]||0)+1;
+ const all=[['all','Everything',DATA.length]].concat(CATS.filter(c=>cnt[c[0]]).map(c=>[c[0],c[2],cnt[c[0]]]));
+ $('filters').innerHTML=all.map(c=>'<button type="button" data-c="'+c[0]+'" aria-pressed="'+(cat===c[0])+'">'+esc(c[1])+' <small>'+c[2]+'</small></button>').join('');
+}
+function index(){
+ const st={};for(const r of DATA){if(r.y==null||r.c==='press')continue;const o=st[r.y]||(st[r.y]={n:0,full:0});o.n++;if(r.c==='broadcast')o.full++}
+ let h='';
+ for(let d=1920;d<=2020;d+=10){
+  h+='<tr><th scope="row">'+d+'s</th>';
+  for(let y=d;y<d+10;y++){
+   if(y<1924||y>2026){h+='<td></td>';continue}
+   if(y===1942){h+='<td colspan="3"><span class="war">no parade</span></td>';continue}
+   if(war(y))continue;
+   const o=st[y],lab='<span class="l">'+y+'</span><span class="s">'+String(y).slice(2)+'</span>';
+   h+='<td>'+(o?'<a href="#y'+y+'"'+(o.full?' class="full"':'')+' title="'+o.n+' recording'+(o.n>1?'s':'')+'">'+lab+'</a>':'<span class="none" title="Nothing found yet">'+lab+'</span>')+'</td>';
+  }
+  h+='</tr>';
+ }
+ $('yi').innerHTML=h;
+ return st;
+}
+const showAll=()=>{if(cat!=='all'||q){cat='all';q='';$('q').value='';filters();render()}};
+$('filters').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;cat=b.dataset.c;try{localStorage.setItem('mpa-cat',cat)}catch(err){}filters();render()});
+let tmr;$('q').addEventListener('input',e=>{clearTimeout(tmr);tmr=setTimeout(()=>{q=e.target.value;render()},140)});
+
+// ---- player ----
+const dlg=$('pl'),set=$('set'),scr=$('scr'),pan=$('pan'),plw=$('plw');
+let canEmbed=!/claude|anthropic/i.test(location.hostname)&&typeof dlg.showModal==='function';
+const noEmbed=()=>{canEmbed=false;$('hint').hidden=true};
+if(!canEmbed)noEmbed();
+const era=y=>y==null||y<1950?'film':y<1970?'console':y<1985?'seventies':y<2000?'vhs':y<2009?'silver':'flat';
+const PANEL={
+ film:y=>'Newsreel'+(y?', '+y:''),
+ console:()=>'<i class="dial"></i><i class="dial"></i><i class="grille"></i>',
+ seventies:()=>'<i class="dial"></i><span class="btns"><i></i><i></i><i></i><i></i></span><i class="grille"></i>',
+ vhs:y=>'<div class="vcr"><span class="slot"><span class="tape">Macy\'s Parade \''+String(y).slice(2)+'</span></span><span class="vfd">PLAY &#9654; SP</span></div>',
+ silver:()=>'<div class="dvr"><i class="led"></i><span class="vfd blue">DVR</span></div>',
+ flat:()=>'<i class="stand"></i>'};
+const CHROME={film:150,console:130,seventies:150,vhs:210,silver:190,flat:140};
+function embedUrl(r){
+ if(r.x)return null;
+ if(r.s==='yt'){const m=r.u.match(/[?&]v=([\w-]{11})/);return m?'https://www.youtube-nocookie.com/embed/'+m[1]+'?autoplay=1&rel=0&playsinline=1':null}
+ if(r.s==='ia'){const id=r.u.split('/details/')[1];return id?'https://archive.org/embed/'+encodeURIComponent(id)+'?autoplay=1':null}
+ return null;
+}
+function play(r){
+ const e=era(r.y),wide=r.y!=null&&r.y>=2008,k=wide?16/9:4/3,side=(e==='console'||e==='seventies')&&innerWidth>560?152:60;
+ set.className='set e-'+e+(e==='console'||e==='seventies'||e==='vhs'?' crt':'');
+ set.style.setProperty('--r',wide?'16/9':'4/3');
+ plw.style.width=Math.round(Math.max(260,Math.min(innerWidth*.92,960,(innerHeight-CHROME[e])*k+side)))+'px';
+ pan.innerHTML=PANEL[e](r.y);
+ scr.innerHTML='<iframe src="'+esc(embedUrl(r))+'" title="'+esc(r.t)+'" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>'+(e==='vhs'?'<span class="osd">PLAY &#9654;</span>':'');
+ $('plt').textContent=(r.y&&!r.t.includes(r.y)?r.y+'. ':'')+r.t;
+ const x=$('plx');x.href=r.u;x.textContent='Open on '+(r.s==='yt'?'YouTube':'the Internet Archive');
+ dlg.showModal();
+}
+dlg.addEventListener('close',()=>{scr.innerHTML=''});
+$('plc').addEventListener('click',()=>dlg.close());
+dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});
+document.addEventListener('securitypolicyviolation',e=>{
+ if(!/frame/.test(e.effectiveDirective||e.violatedDirective||''))return;
+ noEmbed();
+ if(dlg.open)scr.innerHTML='<p class="msg">Video can\'t play inside this preview. Use the link below to watch it.</p>';
+});
+document.addEventListener('click',e=>{
+ const a=e.target.closest('a[href]');if(!a||a.closest('dialog'))return;
+ if(a.closest('#yi')||/^#y\d{4}$/.test(a.getAttribute('href'))){showAll();return}
+ if(!canEmbed||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey||e.button)return;
+ const r=BYURL.get(a.href);if(!r||!embedUrl(r))return;
+ e.preventDefault();play(r);
+});
+
+fetch('data.json').then(r=>r.json()).then(d=>{
+ DATA=d.map(r=>Object.assign(r,{_s:((r.y??'')+' '+r.t+' '+(r.b||'')+' '+(r.n||'')+' '+ONE[r.c]+' '+(SRC[r.s]||'')).toLowerCase()}));
+ for(const r of DATA){if(r.c==='press')continue;if(!BYURL.has(r.u))BYURL.set(r.u,r);for(const m of r.m||[])if(!BYURL.has(m[1]))BYURL.set(m[1],{y:r.y,t:r.t,s:m[0],u:m[1],x:m[3]})}
+ if(cat!=='all'&&!CATS.some(c=>c[0]===cat))cat='all';
+ const st=index();
+ const held=[];for(let y=1924;y<=2025;y++)if(!war(y))held.push(y);
+ const got=held.filter(y=>st[y]),miss=held.filter(y=>!st[y]);
+ const rec=DATA.filter(r=>r.c!=='press'),art=DATA.length-rec.length;
+ $('n-rec').textContent=rec.length;$('n-par').textContent=got.length;
+ $('count').textContent=rec.length+' recordings from '+got.length+' of the '+held.length+' parades held so far'+(art?', plus '+art+' Globe and Boston.com stories':'')+'. Links last checked Nov. 25, 2026.';
+ $('missing').innerHTML='Still missing: '+esc(miss.join(', '))+'. British Movietone ran a newsreel story on the 1947 parade (<a href="https://learningonscreen.ac.uk/newsonscreen/search/index.php/story/14811">catalogue record</a>), but we have not found the film online.';
+ filters();render();
+ const m=location.hash.match(/^#(y\d{4}|undated)$/);if(m){const el=$(m[1]);if(el)el.scrollIntoView()}
+}).catch(()=>{$('list').innerHTML='<p class="empty">The list did not load. Reload the page to try again.</p>'});
+}
+</script>
+</body>
+</html>
